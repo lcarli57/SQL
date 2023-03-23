@@ -51,7 +51,15 @@ INSERT INTO marvels VALUES(26, "Professor X", 58, "Good", "Male", 1.83, 86, "EUA
 
 /* what ae the average, max, and min values in the data?*/
 
-SELECT ROUND(AVG(popularity)) AS "avg_popularity", ROUND(AVG(height_m)) AS avg_weight, ROUND(AVG(intelligence)) AS avg_intelligence, ROUND(AVG(strength)) AS avg_strength, ROUND(AVG(speed)) AS avg_speed, ROUND(AVG(durability)) AS avg_durability, ROUND(AVG(energy_Projection)) AS avg_energy, ROUND(AVG(fighting_Skills)) AS avg_fighting FROM marvels;
+SELECT ROUND(AVG(popularity)) AS "avg_popularity", 
+ ROUND(AVG(height_m)) AS avg_weight, 
+ ROUND(AVG(intelligence)) AS avg_intelligence, 
+ ROUND(AVG(strength)) AS avg_strength, 
+ ROUND(AVG(speed)) AS avg_speed, 
+ ROUND(AVG(durability)) AS avg_durability, 
+ ROUND(AVG(energy_Projection)) AS avg_energy, 
+ ROUND(AVG(fighting_Skills)) AS avg_fighting 
+ FROM marvels;
 
 SELECT name, MAX(popularity) AS max_popularity, MAX(height_m) AS max_weight, MAX(intelligence) AS max_intelligence, MAX(strength) AS max_strength, MAX(speed) AS max_speed, MAX(durability) AS max_durability, MAX(energy_Projection) AS max_energy, MAX(fighting_Skills) AS max_fighting FROM marvels;
 
