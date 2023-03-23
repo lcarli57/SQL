@@ -1,0 +1,30 @@
+--Create a store database
+
+CREATE TABLE store (id INTEGER , name TEXT, catagory TEXT, price INTEGER, size INTEGER);
+
+INSERT INTO store VALUES (1, "Hydro Flask", "kitchen", 35, "50 oz");
+INSERT INTO store VALUES (2, "Phone Case", "accessories", 25, "One Size");
+INSERT INTO store VALUES (3, "Aztec Shirt", "clothes", 15, "S");
+INSERT INTO store VALUES (4, "Glass Cup", "kitchen", 5, "8 Piece");
+INSERT INTO store VALUES (5, "Womens Jeans", "clothes", 45, "L");
+INSERT INTO store VALUES (6, "IPhone Charger", "accessories", 12, "One Size");
+INSERT INTO store VALUES (7, "Mixing Bowls", "kitchen", 20, "3 Piece");
+INSERT INTO store VALUES (8, "Hydro Flask", "kitchen", 25, "40 oz");
+INSERT INTO store VALUES (9, "Hydro Flask", "kitchen", 15, "32 oz");
+INSERT INTO store VALUES (10, "Laptop Charger", "accessories", 55, "One Size");
+INSERT INTO store VALUES (11, "Womens T-Shirt", "clothes", 10, "M");
+INSERT INTO store VALUES (12, "Dinnerware Set", "kitchen", 85, "16 Piece");
+INSERT INTO store VALUES (13, "Socks", "clothes", 15, "S,M,L");
+INSERT INTO store VALUES (14, "Coffee Cup", "kitchen", 5, "6 Piece");
+INSERT INTO store VALUES (15, "Silverware Set", "kitchen", 35, "16 Piece");
+
+--display the database ordered by catagory.
+SELECT * FROM store 
+ORDER BY catagory;
+
+--what is the total price of the items in each catagory?
+SELECT catagory, SUM(price) AS "catagory totals" 
+FROM store 
+GROUP BY catagory;
+
+
