@@ -1,0 +1,41 @@
+--Joining the tables:
+select
+people.show_id,
+people.director,
+titles.title,
+titles.type
+FROM "CharlotteChaze/BreakIntoTech"."netflix_people" people
+left join "CharlotteChaze/BreakIntoTech"."netflix_titles_info" titles
+on people.show_id=titles.show_id ;
+
+--How many movie titles are in the database?
+select count(title)
+from "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+where type='Movie';
+--Answer: 6131 movies
+
+--When was the most recent batch of tv shpws and/or movies addes to the database?
+select max(date(date_added))
+from "CharlotteChaze/BreakIntoTech"."netflix_titles_info";
+--Answer: 2021-09-25
+
+--List all the movies and tv shows in alphabetical order.
+select title
+from "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+order by title asc;
+
+--Who was the director for the movie 'Bright Stars'?
+select director
+from "CharlotteChaze/BreakIntoTech"."netflix_people" people
+left join "CharlotteChaze/BreakIntoTech"."netflix_titles_info" titles
+on people.show_id=titles.show_id
+where title='Bright Star';
+--Answer: Jane Campion
+
+--What is the older movie in the database and what year was it made?
+select title, release_year
+from "CharlotteChaze/BreakIntoTech"."netflix_titles_info"
+where type='Movie'
+order by release_year asc
+limit 1;
+--Answer: Prelude to War 1942
