@@ -53,3 +53,49 @@ SELECT Product, SUM(Quantity)
 FROM BIT_DB.FebSales 
 WHERE location like '%Los Angeles%'
 GROUP BY Product
+
+/*Which locations in New York received at least 3 orders in January, 
+and how many orders did they each receive?*/
+SELECT distinct location, count(orderID)
+FROM BIT_DB.JanSales
+WHERE location LIKE '%NY%'
+AND length(orderID) = 6
+GROUP BY location
+HAVING count(orderID)>2
+
+/*How many of each type of headphone were sold in February?*/
+SELECT Product, SUM(Quantity) as Quantity
+FROM BIT_DB.FebSales
+WHERE Product LIKE '%headphones%'
+GROUP BY Product
+/* Apple Airpods Headphones: 1013,
+Bose SoundSport Headphones: 844,
+Wired Headphones: 1282*/
+
+/*What was the average amount spent per account in February?*/
+SELECT AVG(feb.price*feb.quantity) AS AVG_Spent
+FROM BIT_DB.FebSales feb
+LEFT JOIN BIT_DB.customers cust
+ON feb.orderID= cust.order_ID
+WHERE length(orderID) = 6
+AND orderID <> 'Order ID'
+/* Average amount spent by the accounts in February= $190. */
+
+/*What was the average quantity of products 
+purchased per account in February?*/
+SELECT SUM(Quantity)/COUNT(cust.acctnum) AS AVG_Quantity
+FROM BIT_DB.FebSales feb
+LEFT JOIN BIT_DB.customers cust
+ON feb.orderID= cust.order_ID
+WHERE length(orderID) = 6
+AND orderID <> 'Order ID'
+/* Average quantity of products purchased = 1.*/
+
+/*Which product brought in the most revenue in January and
+how much revenue did it bring in total?*/
+SELECT SUM(price*Quantity) AS total_revenue, Product
+FROM BIT_DB.JanSales
+GROUP BY Product
+ORDER BY total_revenue DESC
+LIMIT 1
+/* Macbook Pro Laptop: $399,500. */
