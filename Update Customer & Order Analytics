@@ -1,0 +1,45 @@
+/*How many orders where places in January?*/
+SELECT COUNT(orderID) 
+FROM BIT_DB.JanSales 
+WHERE length(orderID) = 6
+AND orderID <> 'Order ID'
+/* 9681 orders were placed in January*/
+
+/*How many of those orders were for an iPhone?*/
+SELECT COUNT(orderid)
+FROM BIT_DB.JanSales
+WHERE Product='iPhone'
+AND length(orderid) = 6 
+AND orderid <> 'Order ID'
+/* 379 iPhones sold in January*/
+
+/*Which product was the cheapest one sold in January, and what was the price?*/
+SELECT Product, price
+FROM BIT_DB.JanSales
+ORDER BY price asc LIMIT 1
+/* AA Batteries (4-pack) $2.99*/
+
+/*What is the total revenue for each product sold in January?*/
+SELECT Product, SUM(Quantity)*price AS total_revenue
+FROM BIT_DB.JanSales
+GROUP BY Product
+
+/*Which products were sold in February at 548 Lincoln St, Seattle, WA 98101, 
+how many of each were sold, 
+and what was the total revenue?*/
+SELECT SUM(Quantity), Product, SUM(quantity)*price as revenue
+FROM BIT_DB.FebSales
+WHERE location= "548 Lincoln St, Seattle, WA 98101"
+GROUP BY product
+/* AA Bateries (4-pack), Quantity: 2, Revenue= $7.68*/
+
+/*How many customers ordered more than 2 products at a time in February, 
+and what was the average amount spent for those customers?*/
+SELECT COUNT(distinct customers.acctnum) AS customer,
+AVG(quantity*price) AS spent
+FROM BIT_DB.FebSales feb
+LEFT JOIN BIT_DB.customers customers 
+ON feb.orderID = customers.order_id
+WHERE feb.Quantity>2
+And length(orderID)=6
+/* Customers= 278, Average spent= $13.83*/
