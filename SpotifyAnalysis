@@ -22,6 +22,7 @@ valence decimal(4,3) NOT NULL,
 tempo decimal(6,3) NOT NULL,
 duration_ms integer NOT NULL,
 time_signature integer NOT NULL ) 
+/*Then I inserted the Spotify Data .csv into the table.*/
 
 SELECT * FROM BIT_DB.Spotifydata
 
