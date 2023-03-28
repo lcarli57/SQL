@@ -1,0 +1,80 @@
+/* Analysis of a digital media store artists, 
+albums, media tracks, invoices, and customers;
+to determine marketing strategies.*/
+
+/* Customers who are not in the USA. */
+SELECT Country
+FROM chinook0.customers;
+
+SELECT CustomerID, FirstName, LastName, Country
+FROM chinook0.customers
+WHERE Country <> 'USA';
+/* 46 customers not in the USA. */
+
+/* Which country outside of the USA has
+the most customers?*/
+SELECT COUNT(Country) AS total_customers, Country
+FROM chinook0.customers
+WHERE Country <> 'USA'
+GROUP BY Country
+ORDER BY total_customers DESC;
+/* Canada with 8 customers */
+
+/* How does Canada compare to the USA with customer orders? */
+SELECT COUNT(Country) AS total_customers, Country
+FROM chinook0.customers
+WHERE Country = 'USA'
+GROUP BY Country
+ORDER BY total_customers DESC;
+/* USA has 13 customers, 5 more than Canada. */
+
+/* Invoices for customers from Canada. */
+SELECT invoices.InvoiceId, customer.FirstName, 
+customer.LastName, customer.CustomerId, 
+invoices.BillingCountry, invoices.InvoiceDate
+FROM chinook0.invoices invoices
+LEFT JOIN chinook0.customers customer
+ON invoices.CustomerId = customer.CustomerId
+WHERE BillingCountry = 'Canada'
+GROUP BY invoices.InvoiceId;
+/* 56 invoices from Canada. */
+
+/* Employees who are sales agents. */
+SELECT EmployeeId, FirstName, LastName, Title
+FROM chinook0.employees
+WHERE Title = 'Sales Support Agent';
+/* 3 Sales Support Agents */
+
+/* Distinct list of billing countries from invoices. */
+SELECT DISTINCT BillingCountry
+FROM chinook0.invoices;
+
+/* Invoices associated with each sales agent. */
+SELECT employees.LastName, employees.FirstName, invoice.InvoiceId
+FROM chinook.employees employees 
+JOIN chinook.customers customer ON customer.SupportRepId = employees.EmployeeId
+JOIN chinook.invoices invoice ON invoice.CustomerId = customer.CustomerId ;
+
+/* Invoice totals by customer. */
+SELECT e.LastName, e.FirstName, 
+c.FirstName, c.LastName,
+c.Country, i.Total
+FROM chinook0.employees e
+JOIN chinook0.customers c
+ON c.SupportRepId = e.EmployeeId
+JOIN chinook0.invoices i ON i.CustomerId = c.CustomerId
+
+/* How many invoices were there in 2009? */
+SELECT InvoiceDate
+FROM chinook0.invoices
+/* Year-Month-Day */
+SELECT COUNT(*)
+FROM chinook0.invoices
+WHERE InvoiceDate BETWEEN '2009-01-01' AND '2009-12-31'
+/* 83 invoices */
+
+/* Total sales for 2009. */
+SELECT SUM(Total)
+FROM chinook0.invoices
+WHERE InvoiceDate BETWEEN '2009-01-01' AND '2009-12-31'
+/* $449.47 */
