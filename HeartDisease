@@ -1,0 +1,101 @@
+/* Query written in SQLite Studio, CVS file uplaoded.*/
+
+/*This is my analysis of the 2020 annual CDC survey 
+data of 400k adults related to their health status.*/
+ 
+/*Collected from: 
+https://www.kaggle.com/datasets/kamilpytlak/personal-key-indicators-of-heart-disease */
+
+/*The goal of this analysis to to create a dashboard that provides 
+valuable insights into personal key indecators of heart diease
+by detecting "patterns" from the data 
+that can predict a patient's condition.*/
+
+/*DETERMINE ANALYSIS*/
+
+SELECT AVG(BMI), MIN(BMI), MAX(BMI) FROM BIT_DB.heart_2020
+/* Min= 12.02, Max= 94.85, AVG= 28.33 */
+
+SELECT AVG(PhysicalHealth), MIN(PhysicalHealth), 
+MAX(PhysicalHealth) FROM BIT_DB.heart_2020
+/* AVG= 3.37, Min= 0.0, Max= 9.0 */
+
+/*What is the demographic breakdown of the 
+population covered by the survey?*/
+
+SELECT DISTINCT AgeCategory, AVG(AgeCategory) AS 'AVG_Age', 
+COUNT(AgeCategory) AS 'Age Count',
+Sex, COUNT(Sex) AS 'Sex Count', 
+Race, COUNT(Race) AS 'Race Count'
+FROM BIT_DB.heart_2020
+GROUP BY Sex, AgeCategory, Race
+
+SELECT Sex, COUNT(Sex) AS 'Count'
+FROM BIT_DB.heart_2020
+GROUP BY Sex
+
+SELECT AgeCategory, COUNT(AgeCategory) AS 'Count'
+FROM BIT_DB.heart_2020
+GROUP BY AgeCategory
+
+SELECT Race, COUNT(Race) AS 'Count'
+FROM BIT_DB.heart_2020
+GROUP BY Race
+
+/* Does race have a direct correlation in heart disease rates?*/
+
+SELECT COUNT(HeartDisease) AS '# without HD', Race 
+FROM BIT_DB.heart_2020
+WHERE HeartDisease = 'No'
+GROUP BY Race
+
+SELECT COUNT(HeartDisease) AS '# with HD', Race 
+FROM BIT_DB.heart_2020
+WHERE HeartDisease = 'Yes'
+GROUP BY Race
+ORDER BY '# with HD' DESC
+
+/* Are inidividuals with average to high 
+BMI mre likely to have HD? */
+
+SELECT MAX(BMI), MIN(BMI), AVG(BMI)
+FROM BIT_DB.heart_2020
+
+SELECT COUNT(HeartDisease), BMI
+FROM BIT_DB.heart_2020
+WHERE HeartDisease = 'Yes'
+HAVING BMI BETWEEN '94.85' AND '28.31'
+ORDER BY BMI DESC
+/* 27,373 with HD and high BMI.*/
+
+SELECT COUNT(HeartDisease), BMI
+FROM BIT_DB.heart_2020
+WHERE HeartDisease = 'No'
+HAVING BMI BETWEEN '94.85' AND '28.31'
+ORDER BY BMI DESC
+/* 292,422 no HD and high BMI.*/
+
+/* Is low physical health a predictor of HD?*/
+
+SELECT PhysicalHealth, COUNT(HeartDisease) 
+AS "# With HD & Low PH"
+FROM Bit_DB.heart_2020
+WHERE HeartDisease = 'Yes'
+HAVING PhysicalHealth BETWEEN '3.37' AND '0.0'
+/* 27,373 */
+
+SELECT PhysicalHealth, COUNT(HeartDisease) 
+AS "# With HD & Low PH"
+FROM Bit_DB.heart_2020
+WHERE HeartDisease = 'No'
+HAVING PhysicalHealth BETWEEN '3.37' AND '0.0'
+
+/* Smoking */
+SELECT Smoking, Asthma, COUNT(HeartDisease)
+FROM BIT_DB.heart_2020
+WHERE HeartDisease = 'Yes'
+
+/* Asthma and Smoking */
+SELECT Smoking, Asthma, COUNT(HeartDisease)
+FROM BIT_DB.heart_2020
+WHERE HeartDisease = 'Yes' AND Asthma= 'Yes'
