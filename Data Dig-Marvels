@@ -57,6 +57,8 @@ SELECT MAX(popularity) AS max_popularity,
  MAX(energy_Projection) AS max_energy, 
  MAX(fighting_Skills) AS max_fighting 
  FROM marvels;
+/*max_popularity:91	max_weight:2.87	max_intelligence:7	max_strength:7	
+max_speed:7	max_durability:7	max_energy:7	max_fighting:7*/
 
 SELECT name, MAX(popularity) AS max_popularity, 
  MAX(height_m) AS max_weight, 
@@ -67,6 +69,7 @@ SELECT name, MAX(popularity) AS max_popularity,
  MAX(energy_Projection) AS max_energy, 
  MAX(fighting_Skills) AS max_fighting 
  FROM marvels GROUP BY name ORDER BY name DESC;
+/* Returns a table of all characters attributes.*/
 
 SELECT MIN(popularity) AS min_popularity, 
  MIN(height_m) AS min_weight, 
@@ -77,7 +80,9 @@ SELECT MIN(popularity) AS min_popularity,
  MIN(energy_Projection) AS min_energy, 
  MIN(fighting_Skills) AS min_fighting 
  FROM marvels;
-    
+ /*min_popularity:1	min_weight:1.6	min_intelligence:1	min_strength:2	
+ min_speed:2	min_durability:2	min_energy:1	min_fighting:2.*/
+ 
 SELECT name, MIN(popularity) AS min_popularity, 
  MIN(height_m) AS min_weight, 
  MIN(intelligence) AS min_intelligence, 
@@ -102,33 +107,46 @@ SELECT ROUND(AVG(popularity)) AS "avg_popularity",
 SELECT name, AVG(popularity) AS more_than_avg_popularity FROM marvels
 GROUP BY name
 HAVING more_than_avg_popularity < 21
-ORDER BY more_than_avg_popularity;
+ORDER BY more_than_avg_popularity DESC;
+/* Most popular characters: 
+Iron Man	20
+Doctor Doom	19
+Hulk	18*/
 
 /*How many good to bad marvel charcters are there?*/
 SELECT alignment, COUNT() 
 FROM marvels
 GROUP BY alignment 
 ORDER BY COUNT() DESC;
+/* Good	15
+Neutral	7
+Bad	4, trands towards Good or heros. */
 
 /* Who is the tallest among good heroes? */
 SELECT * FROM marvels 
 WHERE alignment IN ("Good") 
 ORDER BY height_m DESC;
+/* Thor & Silver Surfer */
 
 /* Who is the strongest marvel Hero?*/
 SELECT name, SUM(intelligence+ strength + speed+ durability+ energy_Projection+ fighting_Skills) AS total_score_g 
  FROM marvels GROUP BY name 
  HAVING alignment="Good" 
  ORDER BY total_score_g DESC;
+ /* Rogue	total score= 42 */
 
 /* Who is the strongest marvel Villian?*/
-SELECT name, SUM(intelligence+ strength + speed+ durability+ energy_Projection+ fighting_Skills) AS total_score_b FROM marvels GROUP BY name HAVING alignment="Bad" ORDER BY total_score_b DESC;
+SELECT name, SUM(intelligence+ strength + speed+ durability+ energy_Projection+ fighting_Skills) 
+AS total_score_b FROM marvels GROUP BY name HAVING alignment="Bad" ORDER BY total_score_b DESC;
+/* Thanos	total score= 36 */
 
-/*In a fight with the strongest hero= Rogue and the strongest villian= Thanos, the hero Rogue would win because her total score is 42 and Thanos is 36.
+/*In a fight with the strongest hero= Rogue and the strongest villian= Thanos, 
+the hero Rogue would win because her total score is 42 and Thanos is 36.
 
 /*AND|OR: Who are the strongest good and bad characters from the USA?*/
 SELECT hometown, COUNT() FROM marvels
 GROUP BY hometown ORDER BY COUNT() DESC;
+/* USA=	6 */
 
 SELECT name, hometown FROM marvels WHERE hometown = "USA" AND alignment = "Good"
 GROUP BY name
@@ -136,6 +154,7 @@ HAVING intelligence >= 7
 AND strength >= 7
 OR energy_Projection >= 7
 OR fighting_Skills = 7;
+/* Jean Grey & Rogue */
 
 SELECT name, hometown FROM marvels WHERE hometown = "USA" AND alignment = "Bad"
 GROUP BY name
@@ -143,6 +162,7 @@ HAVING intelligence >= 4
 AND strength >= 4
 OR energy_Projection >= 7
 OR fighting_Skills >= 7;
+/* Green Goblin */
 
 /*CASE: Which character has the greatest potential?*/ 
 SELECT COUNT(),name,
@@ -155,3 +175,7 @@ SELECT COUNT(),name,
     FROM marvels
     GROUP BY potential
     ORDER BY COUNT() DESC;
+    /* 9	Captain America=	top list,
+    8	Silver Surfer=	low potential,
+    6	Professor X=	below target,
+    3	Doctor Doom=	great potential. */
