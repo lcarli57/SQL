@@ -120,7 +120,7 @@ GROUP BY alignment
 ORDER BY COUNT() DESC;
 /* Good	15
 Neutral	7
-Bad	4, trands towards Good or heros. */
+Bad	4, trends towards Good or heros. */
 
 /* Who is the tallest among good heroes? */
 SELECT * FROM marvels 
